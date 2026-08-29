@@ -1,10 +1,13 @@
 package org.stephen.ledgerflow.identity.department;
 
 import org.springframework.stereotype.Service;
+import org.stephen.ledgerflow.common.exception.DepartmentNotFoundException;
 import org.stephen.ledgerflow.common.exception.DuplicateDepartmentCodeException;
 import org.stephen.ledgerflow.identity.department.api.CreateDepartmentRequest;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class DepartmentService {
@@ -19,7 +22,7 @@ public class DepartmentService {
         return departmentRepository.findAll();
     }
 
-    public Department createDepartment(CreateDepartmentRequest request){
+    public Department createDepartment(CreateDepartmentRequest request) {
 
         if (departmentRepository.existsByCode(request.code())){
             throw new DuplicateDepartmentCodeException(request.code());
@@ -31,5 +34,12 @@ public class DepartmentService {
         );
 
         return departmentRepository.save(department);
+    }
+
+    public Department getDepartment(UUID id){
+
+        Department department = departmentRepository.findById(id).orElseThrow(() -> new DepartmentNotFoundException(id));
+
+        return department;
     }
 }

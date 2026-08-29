@@ -56,4 +56,16 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
     }
+
+    @ExceptionHandler(DepartmentNotFoundException.class)
+    public ResponseEntity<ApiError> handleDepartmentNotFoundException(DepartmentNotFoundException ex){
+        ApiError apiError = new ApiError(
+                Instant.now(),
+                404,
+                "DEPARTMENT_NOT_FOUND",
+                ex.getMessage(),
+                List.of()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+    }
 }
