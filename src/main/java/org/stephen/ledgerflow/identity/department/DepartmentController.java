@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.stephen.ledgerflow.identity.department.api.DepartmentResponse;
 
 @RestController
+@RequestMapping("/api/v1")
 public class DepartmentController {
 
     private final DepartmentService departmentService;
@@ -19,12 +20,12 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    @GetMapping("/api/v1/departments")
+    @GetMapping("/departments")
     public List<DepartmentResponse> getDepartments() {
         return departmentService.getDepartments().stream().map(DepartmentResponse::from).toList();
     }
 
-    @PostMapping("/api/v1/departments")
+    @PostMapping("/departments")
     @ResponseStatus(HttpStatus.CREATED)
     public DepartmentResponse createDepartment(
             @Valid
@@ -35,7 +36,7 @@ public class DepartmentController {
         return DepartmentResponse.from(departmentService.createDepartment(request));
     }
 
-    @GetMapping("/api/v1/departments/{id}")
+    @GetMapping("/departments/{id}")
     public DepartmentResponse getDepartment(@PathVariable UUID id) {
         return DepartmentResponse.from(departmentService.getDepartment(id));
     }
